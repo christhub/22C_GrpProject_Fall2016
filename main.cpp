@@ -57,8 +57,8 @@ void undo(Stack<Bike*> *, Stack<Bike*>*, BinarySearchTree<Bike*> *, BinarySearch
 void undoClear(Stack<Bike*>*, Stack<Bike*>*);
 void menu(string, BinarySearchTree<Bike*>*, BinarySearchTree<Bike*>*, HashList<Bike*>*, Stack<Bike*>*, Stack<Bike*>*);
 void search(BinarySearchTree<Bike*>*);
+void addBike(BinarySearchTree<Bike*>*, BinarySearchTree<Bike*>*, HashList<Bike*> *);
 void options();
-
 void hashSearch(HashList<Bike*>*);
 
 int main()
@@ -73,7 +73,6 @@ int main()
 	const char outputFileName[] = "OutputData.txt";
 
 	readFile(bikeST, bikeMakeSt, bikeHash, inputFileName);
-
 
 
 	menu(outputFileName, bikeST, bikeMakeSt, bikeHash, undoStackSerial, undoStackMake);
@@ -117,7 +116,10 @@ void hashSearch(HashList<Bike*>*bikeHash)
 
 void options()
 {
+	cout << "    .-.-.=\-." << endl;
+	cout << "    (_)=='(_)" << endl;
 	cout << "~^&~!Please enter in a choice~^&~!" << endl;
+	cout << "I - Insert a new bike" << endl;
 	cout << "P - Print BST as indented list to screen" << endl;
 	cout << "R - Print Hash Table" << endl;
 	cout << "D - Delete a node from BST and Hash" << endl;
@@ -126,7 +128,7 @@ void options()
 	cout << "S - Hash Statistics" << endl;
 	cout << "U - Undo Delete since last save" << endl;
 	cout << "O - Save BST and Hash to output.txt" << endl;
-	cout << "C - Serach the BST by Bike make" << endl;
+	cout << "C - Search the BST by Bike make" << endl;
 	cout << "A - About the Devs" << endl;
 	cout << "H - Help" << endl;
 	cout << "Q - Quit" << endl;
@@ -195,6 +197,10 @@ void menu(string outputFileName, BinarySearchTree<Bike*> *bikeBST, BinarySearchT
 		case 'e':
 			removeSecondaryKey(bikeMakeST, bikeBST, bikeHash, undoStackSerial, undoStackMake);
 			break;
+		case 'I':
+		case 'i':
+			addBike(bikeBST, bikeMakeST, bikeHash);
+			break;
 		case 'Q':
 		case 'q':
 			exit(111);
@@ -222,6 +228,11 @@ void search(BinarySearchTree<Bike*>* bikeMakeST)
 	{
 		stillSearching = bikeMakeST->findNode(searchBikeMake, isGreaterMake, isEqualMake, isEqualSerial, bikeQueue);
 	}
+
+	while(!bikeQueue->isEmpty())
+	{
+		bikeQueue->dequeue(searchBikeMake);
+	}
 }
 
 void about()
@@ -233,6 +244,15 @@ void about()
 
 void undo(Stack<Bike*> * undoStackSerial, Stack<Bike*> * undoStackMake, BinarySearchTree<Bike*> *serialBST, BinarySearchTree<Bike*> * makeBST, HashList<Bike*> *bikeHash)
 {
+	if (!undoStackSerial->isEmpty())
+		cout << "Your request has been undone" << endl;
+	else
+	{
+		cout << "Nothing to be undone, sorry." << endl;
+		return;
+	}
+
+
 	while(!undoStackSerial->isEmpty())
 	{
 		Bike* bike = new Bike;
@@ -247,6 +267,7 @@ void undo(Stack<Bike*> * undoStackSerial, Stack<Bike*> * undoStackMake, BinarySe
 		Bike * bikeMake = new Bike;
 		undoStackMake->pop(bikeMake);
 	}
+	
 
 }
 
@@ -327,7 +348,6 @@ void removeSecondaryKey(BinarySearchTree<Bike*>* bikeMakeSt, BinarySearchTree<Bi
 		deleteStack->pop(removeBikeMake);
 	}
 
-
 }
 
 void readFile(BinarySearchTree<Bike*>* bikenarySearchTree, BinarySearchTree<Bike*> * bikeMakeSt, HashList<Bike*> *bikeHash, string inputFileName)
@@ -356,4 +376,29 @@ void readFile(BinarySearchTree<Bike*>* bikenarySearchTree, BinarySearchTree<Bike
 	};
 
 	cout << "Compelted File input!" << endl;
+}
+
+void addBike(BinarySearchTree<Bike*>* bikeSerialTree, BinarySearchTree<Bike*>* bikeMakeTree, HashList<Bike*>* bikeHash)
+{
+	string saddle, frameSize, serialNumber, make, frameMaterial;
+	cout << "Hi! I'm Joquain! I'm going to help you add a bike to the database! I can't wait!" << endl;
+	cout << "First, let me know what your bikes serial number is! >> ";
+	cin >> serialNumber;
+	cout << "Did you know that bikes are one of the most efficient vehicles on the planet?" << endl;
+	cout << "Now, let me know the make of your bike! >> ";
+	cin >> make;
+	cout << "Did you know that there are 100 million bikes manufactured each year?! Dang!" << endl;
+	cout << "What's the frame material? >> ";
+	cin >> frameMaterial;
+	cout << "Don't you love the feeling of gliding and coasting at the same time without all the worries of flying?" << endl;
+	cout << "What is the frame size?" << endl;
+	cin >> frameSize;
+	cout << "Cool! Let me add your bike to the database." << endl;
+
+	Bike* bicicleta = new Bike(serialNumber, make, frameMaterial, frameSize, saddle);
+
+	bikeSerialTree->insert(bicicleta, isGreaterSerial);
+	bikeMakeTree->insert(bicicleta, isGreaterMake);
+	bikeHash->hashInsert(bicicleta->getSerialNumber(), bicicleta);
+	cout << ". Boop boop boop. Done." << endl;
 }
