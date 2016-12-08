@@ -141,7 +141,7 @@ void HashList<ItemType>::hashPrint()
 	{
 		holder = hashTable[i];
 		bool notEmpty = false;
-		cout << "Adsress " << i << ": " ;
+		cout << "Address " << i << ":** " ;
 
 		while (holder != NULL)
 		{
