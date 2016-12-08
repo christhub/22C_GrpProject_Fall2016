@@ -224,6 +224,7 @@ void search(BinarySearchTree<Bike*>* bikeMakeST)
 
 	cout << "Here are your bikes: " << endl;
 
+	cout << setw(20) << "Serial String" << setw(15) << "Make" << setw(25) << "Frame Material" << setw(25) << "Frame Size" << setw(25) << "Saddle Type" << endl;
 	while(stillSearching)
 	{
 		stillSearching = bikeMakeST->findNode(searchBikeMake, isGreaterMake, isEqualMake, isEqualSerial, bikeQueue);

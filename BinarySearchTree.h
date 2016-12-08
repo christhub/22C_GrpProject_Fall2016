@@ -179,7 +179,12 @@ bool BinarySearchTree<ItemType>::findNode(ItemType target, bool isGreater(ItemTy
 	if(bikeNode != 0)
 	{	
 		bike = bikeNode->getItem();
-		cout << "Serial Number: " << bike->getSerialString() << " Make: " << bike->getMake() << endl;
+		cout << setw(20) << bike->getSerialString() 
+			<< setw(19) << bike->getMake()
+			<< setw(19) << bike->getFrameMaterial()
+			<< setw(19) << bike->getFrameSize()
+			<< setw(33) << bike->getSaddle() << endl;
+		cout << "**********************************************************************************************************************" << endl;
 		foundQueue->enqueue(bike);
 		return true;
 	}
