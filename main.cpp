@@ -48,18 +48,19 @@ bool isEqualSerial(Bike *obj1, Bike* obj2)
 }
 
 
-void readFile(BinarySearchTree<Bike*>*, BinarySearchTree<Bike*>*, HashList<Bike*> *bikeHash, string);
+void readFile(BinarySearchTree<Bike*>*, BinarySearchTree<Bike*>*, HashList<Bike*> *, string);
 void outputFile(string, BinarySearchTree<Bike*>*, Stack<Bike*>*, Stack<Bike*>*);
-void remove(BinarySearchTree<Bike*>*, BinarySearchTree<Bike*>*,  HashList<Bike*> *bikeHash, Stack<Bike*>*, Stack<Bike*>*);
-void removeSecondaryKey(BinarySearchTree<Bike*>* bikeMakeSt, BinarySearchTree<Bike*>* bikeSerialSt, HashList<Bike*> *bikeHash, Stack<Bike*> *, Stack<Bike*> *);
+void remove(BinarySearchTree<Bike*>*, BinarySearchTree<Bike*>*,  HashList<Bike*> *, Stack<Bike*>*, Stack<Bike*>*);
+void removeSecondaryKey(BinarySearchTree<Bike*>*, BinarySearchTree<Bike*>* , HashList<Bike*> *, Stack<Bike*> *, Stack<Bike*>*);
 void about();
-void undo(Stack<Bike*> *, Stack<Bike*>*, BinarySearchTree<Bike*> *, BinarySearchTree<Bike*>*, HashList<Bike*> *);
+void undo(Stack<Bike*> *, Stack<Bike*>*, BinarySearchTree<Bike*> *, BinarySearchTree<Bike*>*, HashList<Bike*>*);
 void undoClear(Stack<Bike*>*, Stack<Bike*>*);
 void menu(string, BinarySearchTree<Bike*>*, BinarySearchTree<Bike*>*, HashList<Bike*>*, Stack<Bike*>*, Stack<Bike*>*);
 void search(BinarySearchTree<Bike*>*);
 void addBike(BinarySearchTree<Bike*>*, BinarySearchTree<Bike*>*, HashList<Bike*> *);
 void options();
 void hashSearch(HashList<Bike*>*);
+void print(BinarySearchTree<Bike*>*, BinarySearchTree<Bike*>*, HashList<Bike*> *);
 
 int main()
 {
@@ -74,13 +75,35 @@ int main()
 
 	readFile(bikeST, bikeMakeSt, bikeHash, inputFileName);
 
-
 	menu(outputFileName, bikeST, bikeMakeSt, bikeHash, undoStackSerial, undoStackMake);
 
 
 
 	system("pause");
 	return 0;
+}
+
+
+void print(BinarySearchTree<Bike*>*bikeMake, BinarySearchTree<Bike*>*bikeSerial, HashList<Bike*>* bikeHash)
+{
+	int choice;
+	cout << "1 - Print Bikes by Make (indented)" << endl;
+	cout << "2 - Print Bikes by Serial (indented)" << endl;
+	cout << "3 - Print Bike hash" << endl;
+	cin >> choice; 
+
+	switch (choice)
+	{
+	case 1:
+		bikeMake->printInorderIndented();
+		break;
+	case 2:
+		bikeSerial->printInorderIndented();
+		break;
+	case 3:
+		bikeHash->hashPrint();
+		break;
+	}
 }
 
 void hashSearch(HashList<Bike*>*bikeHash)
@@ -119,16 +142,20 @@ void options()
 	cout << "    .-.-.=\-." << endl;
 	cout << "    (_)=='(_)" << endl;
 	cout << "~^&~!Please enter in a choice~^&~!" << endl;
-	cout << "I - Insert a new bike" << endl;
-	cout << "P - Print BST as indented list to screen" << endl;
-	cout << "R - Print Hash Table" << endl;
+	cout << "I - Add a new bike" << endl;
+	cout << "P - Options to print data" << endl;
+
 	cout << "D - Delete a node from BST and Hash" << endl;
 	cout << "E - Delete a from BST and Hash based on Secondary Key" << endl;
+
 	cout << "T - Hash Search" << endl;
+	cout << "C - Search the BST by Bike make" << endl;
+
 	cout << "S - Hash Statistics" << endl;
+
 	cout << "U - Undo Delete since last save" << endl;
 	cout << "O - Save BST and Hash to output.txt" << endl;
-	cout << "C - Search the BST by Bike make" << endl;
+	
 	cout << "A - About the Devs" << endl;
 	cout << "H - Help" << endl;
 	cout << "Q - Quit" << endl;
@@ -156,18 +183,9 @@ void menu(string outputFileName, BinarySearchTree<Bike*> *bikeBST, BinarySearchT
 		case 'h':
 			options();
 			break;
-		case 'R':
-		case 'r':
-			cout << "Hash Table: " << endl;
-			bikeHash->hashPrint();
-			break;
 		case 'P':
 		case 'p':
-			cout << "Primary Key: " << endl;
-			bikeBST->printInorderIndented();
-			cout << endl;
-			cout << "Secondary Key: " << endl;
-			bikeMakeST->printInorderIndented();
+			print(bikeMakeST,bikeBST,bikeHash);
 			break;
 		case 'c':
 		case 'C':
@@ -292,7 +310,6 @@ void outputFile(string outputFileName, BinarySearchTree<Bike*>* bikenarySearchTr
 }
 
 
-//Remove should remove from the Hash too correct?
 // get the bike
 // detele from hash and bst and bst
 void remove(BinarySearchTree<Bike*>* bikenarySearchTree, BinarySearchTree<Bike*>* bikeMakeTree,HashList<Bike*> *bikeHash, Stack<Bike*>* undoStackSerial, Stack<Bike*>* undoStackMake)
